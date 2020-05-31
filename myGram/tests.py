@@ -1,5 +1,6 @@
 from django.test import TestCase
 from .models import Image,Profile,Comment
+from django.contrib.auth.models import User
 
 
 class ImageTestCase(TestCase):
@@ -24,22 +25,25 @@ class ImageTestCase(TestCase):
 
 class ProfileTestCase(TestCase):
     def setUp(self):
-        self.user = User(username="test_name", password = "test_pass",email="testmail@gmail.com")
+        self.user = User(username="test_name2", password = "test_pass",email="testmail@gmail.com")
         self.user.save()
-        self.profile = Profile(user=self.user, profile_pic='test.jpg',bio="test_bio",followers=0, following=0,)
+        self.profile = Profile(user=self.user, profile_pic='test.jpg',bio="test_bio")
         self.profile.save()
-        
+
 
     def test_instance(self):
         self.assertTrue(isinstance(self.profile,Profile)) 
 
     def test_search_profile(self):
         self.user.save()
-        user = Profile.search_user(self.test_name)
+        user = Profile.search_profile(self.test_name2)
         self.assertEqual(len(user), 1)
 
     def tearDown(self):
         User.objects.all().delete()
         Profile.objects.all().delete()
+        
+
+    
         
                          
