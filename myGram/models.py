@@ -31,6 +31,22 @@ class Profile(models.Model):
     bio =  models.TextField(blank=True)
     followers = models.ManyToManyField(User, related_name="followers", blank=True)
     following = models.ManyToManyField(User, related_name="following", blank=True)
+     
+    def __str__(self):
+        return self.user.username
+
+    @classmethod
+    def search_profile(cls, name):
+        return cls.objects.filter(user__username__icontains=name).all()
+
+    @receiver(post_save, sender = User)
+    def create_profile(sender, instance,created, **kwargs):
+        if created:
+            Profile.objects.create(user = instance)
+
+    @receiver(post_save,sender = User)
+    def save_profile( sender, instance, **kwargs):
+        instance.profile.save()
 
 class Comment(models.Model):
     username = models.ForeignKey(User,on_delete=models.CASCADE)
