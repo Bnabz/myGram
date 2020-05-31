@@ -11,6 +11,10 @@ class Image(models.Model):
     likes = models.IntegerField(default=0)
     caption = models.CharField(max_length =360)
 
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    profile_pic = CloudinaryField('image')
+    bio =  models.TextField(blank=True)
 # class Comment(models.Model):
 #     poster = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
 #     image = models.ForeignKey(Image, on_delete=models.CASCADE, related_name='comments',null=True)
@@ -26,3 +30,4 @@ class Image(models.Model):
 #     def get_comment(cls):
 #         comment = Comment.objects.all()
 #         return comment
+
