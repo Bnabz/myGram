@@ -4,7 +4,13 @@ from .models import Image,Comment,Profile
 class PostForm(forms.ModelForm):
     class Meta:
         model = Image
-        exclude=['profile','date_uploaded','likes',]
+        exclude=['profile','date_uploaded','likes']
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        exclude=['followers','following']
 
 class CommentForm(forms.ModelForm):
     class Meta:
