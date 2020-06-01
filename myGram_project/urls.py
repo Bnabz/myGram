@@ -19,11 +19,14 @@ from django.contrib.auth import views
 from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
-    path('', include('myGram.urls')),
+    path('', include('myGram.urls')name='welcome'),
     path('admin/', admin.site.urls),
     path('accounts/', include('django_registration.backends.one_step.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/login/', LoginView.as_view(), name='login'),
     path('accounts/logout/', LogoutView.as_view(), name='logout'),
+    # path('accounts/logout',LogoutView.as_view(redirect_field_name ='/accounts/login'))
+    path('accounts/register/complete/',(redirect_field_name ='welcome'))
+    
     
 ]
