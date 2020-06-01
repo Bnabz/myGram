@@ -1,0 +1,34 @@
+{%extends 'base.html'%}
+{% load bootstrap3 %}
+
+{% block content %}
+{{block.super}}
+
+<div class="container">
+  <div class="card">
+
+    <div class="view overlay">
+      <img class="card-img-top " src="{{profile.profile_pic.url}}" alt="Card image cap" style="height: 250px; width: 250px">
+    </div>
+
+    <div class="card-body">
+  
+      <h4 class="card-title">Username : <strong>{{profile.user}}</strong></h4>
+      <p class="card-text"> {{profile.bio | safe }} </p>
+      <hr>
+      <ul>
+        <li><span>{{post_number}}</span> posts</li>
+        <li><span>{{profile.followers|length}}</span> followers</li>
+        <li><span>{{profile.following|length}}</span> following</li>
+      </ul>
+  
+    </div>
+  
+  </div>
+   <a href="{%url 'edit-profile' %}" class="btn purple-gradient">Edit Profile</a>
+    <hr>
+
+</div>
+
+
+{% endblock %}
