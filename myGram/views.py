@@ -6,16 +6,15 @@ from django.contrib.auth.decorators import login_required
 from .forms import CommentForm,PostForm,ProfileForm
 from django.contrib.auth.models import User
 
- @login_required(login_url='/accounts/login/')
+@login_required(login_url='/accounts/login/')
 def index(request):
     current_user = request.user
-    current_profile = UserProfile.objects.get(id = current_user.id)
+    current_profile = Profile.objects.get(id = current_user.id)
     posts = Post.objects.all()
     profiles = Profile.objects.all()
-    form = CommentForm()
     comments = Comment.objects.all()
     
-    return render(request, 'index.html', { "current_user":current_user, "current_profile":current_profile,"posts": posts ,"profiles":profiles,"form":form, "comments":comments})
+    return render(request, 'index.html', { "current_user":current_user, "current_profile":current_profile,"posts": posts ,"profiles":profiles,"comments":comments})
 
 
 @login_required(login_url='/accounts/login/')
@@ -38,3 +37,30 @@ def create_post(request):
         form = PostForm()
 
     return render(request, 'create_post.html',{"form":form,"current_profile":current_profile })
+
+@login_required(login_url='/accounts/login/')
+def display_post(request, id):
+    post = Post.objects.get(id = id)
+    comments = Comment.objects.filter(post__id=id)
+    current_user = request.user
+    current_profile = UserProfile.objects.get(id = current_user.id)
+
+    if request.method == "POST":
+        comment_form = CommentForm(request.POST)
+
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.user = current_user
+            comment.post = post
+            comment.save()
+            comment_form = CommentForm()
+            return redirect("display_post", post.id)
+
+    else:
+        comment_form = CommentForm()
+
+    return render(request, "display_post.html", {"post":post,"current_user":current_user,"current_profile":current_profile,"comment_form":comment_form,"comments":comments,})
+                                                                        
+                                                          
+                                                          
+                                                          
