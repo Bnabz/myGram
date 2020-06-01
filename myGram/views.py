@@ -60,6 +60,26 @@ def display_post(request, id):
         comment_form = CommentForm()
 
     return render(request, "display_post.html", {"post":post,"current_user":current_user,"current_profile":current_profile,"comment_form":comment_form,"comments":comments,})
+
+@login_required(login_url='/accounts/login/')
+def profile(request):
+    current_user = request.user
+    current_user_id=request.user.id
+    form = CommentForm()
+    comments=Comment.objects.all()
+  
+
+    try:
+        profile = Profile.objects.get(user=current_user)
+        posts = Post.objects.filter(profile=current_user_id)
+        title = profile.user
+        username = profile.user
+        post_number = len(posts)
+
+    except ObjectDoesNotExist:
+        return redirect('index')
+
+    return render(request, 'profile.html',{"profile":profile,"posts":posts,"form":form,"post_number":post_number,"title":title,"username":username,"comments":comments})
                                                                         
                                                           
                                                           
