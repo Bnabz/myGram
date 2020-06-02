@@ -78,6 +78,33 @@ def profile(request):
         return redirect('index')
 
     return render(request, 'profile.html',{"profile":profile,"posts":posts,"form":form,"post_number":post_number,"title":title,"username":username,"comments":comments})
+
+
+def search_results(request):
+    if 'searchterm' in request.GET and request.GET['searchterm']:
+        search_term = request.GET.get("searchterm")
+        searched_user = Profile.search_profile(search_term)
+        posts = Image.objects.filter(profile__id=searched_user.id)
+        message = f"{search_term}"
+
+        return render(request,'search.html', {"message":message, "user":searched_user,"posts":posts})
+
+    else:
+        message = "You haven't searched for any username"
+        return render(request,'search.html',{"message":message})
+
+
+def like(request, id):
+    post = Image.objects.get(id = id)
+    post.likes += 1
+    post.save()
+    return HttpResponseRedirect(reverse("index"))
+
+def like_post(request, id):
+    post = Image.objects.get(id = id)
+    post.likes += 1
+    post.save()
+    return redirect("display_post", post.id)
                                                                         
                                                           
                                                           
