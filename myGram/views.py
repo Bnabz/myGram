@@ -10,11 +10,9 @@ from django.contrib.auth.models import User
 def index(request):
     current_user = request.user
     current_profile = Profile.objects.get(id = current_user.id)
-    posts = Post.objects.all()
-    profiles = Profile.objects.all()
+    posts = Image.objects.all()
     comments = Comment.objects.all()
-    
-    return render(request, 'index.html', { "current_user":current_user, "current_profile":current_profile,"posts": posts ,"profiles":profiles,"comments":comments})
+    return render(request, 'index.html', { "current_user":current_user, "current_profile":current_profile,"posts": posts ,"comments":comments})
 
 
 @login_required(login_url='/accounts/login/')
