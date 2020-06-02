@@ -105,6 +105,22 @@ def like_post(request, id):
     post.likes += 1
     post.save()
     return redirect("display_post", post.id)
+
+@login_required(login_url='/accounts/login')
+def edit_profile(request):
+
+    form=ProfileForm(instance=request.user.profile)
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES,instance=request.user.profile)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.user = request.user
+            profile.save()
+
+        else:
+            form=ProfileForm()
+
+    return render(request,'edit_profile.html', {"form":form})
                                                                         
                                                           
                                                           
