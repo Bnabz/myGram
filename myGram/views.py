@@ -5,6 +5,7 @@ from .models import Image, Comment, Profile
 from django.contrib.auth.decorators import login_required
 from .forms import CommentForm,PostForm,ProfileForm
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 @login_required(login_url='/accounts/login/')
 def index(request):
@@ -60,24 +61,30 @@ def display_post(request, id):
     return render(request, "display_post.html", {"post":post,"current_user":current_user,"current_profile":current_profile,"comment_form":comment_form,"comments":comments,})
 
 @login_required(login_url='/accounts/login/')
-def profile(request):
-    current_user = request.user
-    current_user_id=request.user.id
-    form = CommentForm()
-    comments=Comment.objects.all()
+def profile(request,id):
+
+    user = User.objects.get(id=id)
+    profile = Profile.objects.get(id=id)
+    posts = Image.objects.filter(profile__id=id)
+    username = profile.user.username
+    post_number = len(posts)
+    
   
 
-    try:
-        profile = Profile.objects.get(user=current_user)
-        posts = Post.objects.filter(profile=current_user_id)
-        title = profile.user
-        username = profile.user
-        post_number = len(posts)
+    return render(request, 'profile.html',{"profile":profile,"posts":posts,"user":user,"username":username,"post_number":post_number})
 
-    except ObjectDoesNotExist:
-        return redirect('index')
+@login_required(login_url='/accounts/login/')
+def my_profile(request):
+    current_user = request.user
+    id=request.user.id 
+    profile = Profile.objects.get(id=id)
+    posts = Image.objects.filter(profile__id=id)
+    username = profile.user.username
+    post_number = len(posts)
+    
 
-    return render(request, 'profile.html',{"profile":profile,"posts":posts,"form":form,"post_number":post_number,"title":title,"username":username,"comments":comments})
+    return render(request, 'my_profile.html',{"profile":profile,"posts":posts,"current_user":current_user,"username":username,"post_number":post_number})
+    
 
 
 def search_results(request):
@@ -116,6 +123,7 @@ def edit_profile(request):
             profile = form.save(commit=False)
             profile.user = request.user
             profile.save()
+            return redirect('index')
 
         else:
             form=ProfileForm()
