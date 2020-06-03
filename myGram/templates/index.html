@@ -1,9 +1,6 @@
 {%extends 'base.html'%}
 {% load bootstrap3 %}
 
-{%extends 'base.html'%}
-{% load bootstrap3 %}
-
 {% block content %}
 {{block.super}}
 
@@ -39,15 +36,11 @@
                     <p class="card-text mb-3"><span style="font-weight: bolder;">{{comment.user.username}} </span>{{comment.comment}}</p>
                     {%endif%}
                 {%endfor%}
-                <p class="text-muted">{{post.date|timesince|upper}}</p>
+                <p class="text-muted">{{post.date_uploaded|timesince|upper}}</p>
             </div>
         </div>
         {%endfor%}
-
-
     </div>
 </div>
-
-
 
 {% endblock %}

@@ -29,7 +29,7 @@ def create_post(request):
             post.likes = 0
             post.save()
 
-        return redirect('home')
+        return redirect('index')
 
     else:
         form = PostForm()
