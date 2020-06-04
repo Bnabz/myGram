@@ -85,18 +85,7 @@ def my_profile(request):
 
 
 def search_results(request):
-    # if 'searchterm' in request.GET and request.GET['searchterm']:
-    #     search_term = request.GET.get("searchterm")
-    #     # user = Profile.search_profile(search_term)
-    #     user = User.objects.get(username = search_term)
-    #     posts = Image.objects.filter(profile__id=user.id)
-    #     message = f"{search_term}"
 
-    #     return render(request,'search.html', {"message":message, "user":user,"posts":posts})
-
-    # current_user = request.user
-    # current_user_id=request.user.id
-    # posts = Image.objects.filter(user=current_user_id)
     if 'searchterm' in request.GET and request.GET['searchterm']:
         search_term = request.GET.get("searchterm")
         searched_name = Profile.search_profile(search_term)

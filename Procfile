@@ -1,0 +1,1 @@
+web: gunicorn myGram_project.wsgi --log-file -
