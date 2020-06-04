@@ -16,12 +16,9 @@
       <h4 class="card-title">Username : <strong>{{profile.user.username}}</strong></h4>
       <p class="card-text"> {{profile.bio | safe }} </p>
       <hr>
-      <ul>
-        <li><span>{{post_number}}</span> posts</li>
-        <li><span>{{profile.followers|length}}</span> followers</li>
-        <li><span>{{profile.following|length}}</span> following</li>
-      </ul>
-  
+        <span>{{post_number}} posts</span> </br>
+        <span>{{profile.followers|length}} followers</br> 
+        <span>{{profile.following|length}} following</br> 
     </div>
   
 {% endblock %}

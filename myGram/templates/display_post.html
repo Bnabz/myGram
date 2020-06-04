@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <img src="{{post.image.url}}" alt="" class="img-fluid">
+            </div>
+
+        </div>
+        <div class="col-md-4">
+            <div style="display: flex;">
+                <img src="{{post.profile.profile.profile_pic.url}}" alt="profile pic" style="border-radius: 300%;" width="32"
+                    height="32" class="img-fluid">
+                <a href="{%url 'profile' post.profile.id%}" style="color: #333;">
+                    <h5 class="card-title" style="padding-top: 10px; margin-left:10px">{{post.profile.username}}
+                    </h5>
+                </a>
+            </div>
+            <hr>
+            {%for comment in comments%}
+            <p><span style="font-weight: bolder;">{{comment.username.username}}:</span> {{comment.comment}}</p>
+            {%endfor%}
+            <a href="{%url 'like_post' post.id%}">
+                <i class="fa fa-heart" style="font-size: 30px; margin-right:10px; color:red"></i>
+            </a>
+            <p class="ml-2" style="font-weight: bolder; margin-top:10px">{{post.likes}} likes</p>
+            <p class="ml-2 text-muted">Posted {{post.date|timesince}} ago</p>
+            <form class="" action="{%url 'display_post' post.id%}" style="display:flex" method="POST">
+                {%csrf_token%}
+                {{comment_form}}
+                <button style="border:none; border-radius:0; font-weight:bold; padding:10px;">Post</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+

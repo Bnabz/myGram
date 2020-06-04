@@ -21,24 +21,18 @@
                 <a href="{%url 'like' post.id%}">
                     <i class="fa fa-heart" style="font-size: 30px; margin-right:10px; color:red"></i>
                 </a>
-                <a href="{%url 'display_post' post.id%}">
-                    
+                <a href="{%url 'display_post' post.id%}"> 
                     <i style="font-size:40px" class="fa">&#xf0e6;</i>
                 </a>
                 
             </div>
-            <p class="card-text ml-4" style="font-weight: bolder;">{{post.likes}} likes</p>
-            <div class="ml-4 mb-3">
+            <p class="card-text ml-4" style="font-weight: bolder;padding-left: 15px;">{{post.likes}} likes</p>
+            <div class="ml-4 mb-3"style="padding-left: 15px;">
                 <p class="card-text">{{post.caption}}</p>
             </div>
-            <div class="ml-4">
-                {%for comment in comments%}
-                    {%if comment.id == post.id%}
-                    <p class="card-text text-muted">{{comments|length}} comments</p>
-                    <p class="card-text mb-3"><span style="font-weight: bolder;">{{comment.user.username}} </span>{{comment.comment}}</p>
-                    {%endif%}
-                {%endfor%}
-                <p class="text-muted">{{post.date_uploaded|timesince|upper}}</p>
+            <div class="ml-4" style="padding-left: 15px;">
+              
+                <p class="card-text">Posted {{post.date_uploaded|timesince|upper}} ago</p>
             </div>
         </div>
         {%endfor%}
@@ -46,4 +40,3 @@
 </div>
 
 {% endblock %}
-<!-- <i class="far fa-comment fa-lg" style="font-size: 30px;"></i> -->

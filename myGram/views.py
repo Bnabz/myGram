@@ -9,11 +9,8 @@ from django.urls import reverse
 
 @login_required(login_url='/accounts/login/')
 def index(request):
-    current_user = request.user
-    current_profile = Profile.objects.get(id = current_user.id)
     posts = Image.objects.all()
-    comments = Comment.objects.all()
-    return render(request, 'index.html', { "current_user":current_user, "current_profile":current_profile,"posts": posts ,"comments":comments})
+    return render(request, 'index.html', {"posts": posts,})
 
 
 @login_required(login_url='/accounts/login/')
@@ -39,18 +36,18 @@ def create_post(request):
 
 @login_required(login_url='/accounts/login/')
 def display_post(request, id):
-    post = Post.objects.get(id = id)
-    comments = Comment.objects.filter(post__id=id)
+    post = Image.objects.get(id = id)
+    comments = Comment.objects.filter(image__id=id)
     current_user = request.user
-    current_profile = UserProfile.objects.get(id = current_user.id)
+    current_profile = Profile.objects.get(id = current_user.id)
 
     if request.method == "POST":
         comment_form = CommentForm(request.POST)
 
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
-            comment.user = current_user
-            comment.post = post
+            comment.username = current_user
+            comment.image = post
             comment.save()
             comment_form = CommentForm()
             return redirect("display_post", post.id)
@@ -88,13 +85,24 @@ def my_profile(request):
 
 
 def search_results(request):
+    # if 'searchterm' in request.GET and request.GET['searchterm']:
+    #     search_term = request.GET.get("searchterm")
+    #     # user = Profile.search_profile(search_term)
+    #     user = User.objects.get(username = search_term)
+    #     posts = Image.objects.filter(profile__id=user.id)
+    #     message = f"{search_term}"
+
+    #     return render(request,'search.html', {"message":message, "user":user,"posts":posts})
+
+    # current_user = request.user
+    # current_user_id=request.user.id
+    # posts = Image.objects.filter(user=current_user_id)
     if 'searchterm' in request.GET and request.GET['searchterm']:
         search_term = request.GET.get("searchterm")
-        searched_user = Profile.search_profile(search_term)
-        posts = Image.objects.filter(profile__id=searched_user.id)
-        message = f"{search_term}"
-
-        return render(request,'search.html', {"message":message, "user":searched_user,"posts":posts})
+        searched_name = Profile.search_profile(search_term)
+        print(searched_name)
+      
+        return render(request,'search.html', { "users":searched_name,})
 
     else:
         message = "You haven't searched for any username"

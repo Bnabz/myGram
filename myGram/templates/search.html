@@ -5,39 +5,41 @@
 {{block.super}}
 
 <div class="container">
-    <div class="row text-center">
-      {% if user %}
-      <h2> Found {{user|length}} user with the name "{{message}}"</h2>
-      {% else %}
-      <h2> Found 0 users for the name "{{message}}"</h2>
-      {% endif %}
-    </div>
+   
 
-    {% if user %}
+    {% if users %}
     <div class="text-center">
       <div class="panel" style="width: 45rem;">
             <div class="panel-body">
-                {% for user in user%}
+              {% for user in users%}
                         <div class="card">
+                          {% if user.profile_pic%}
                             <div class="view overlay">
                             <img class="card-img-top" src="{{user.profile_pic.url}}"  alt="Card image">
                             </div>
-                    
+                            {% endif %}
                             <div class="card-body">
-                            <h4 class="card-title">{{user.user}}</h4>
-                            <hr>
-                            <p class="card-text"> {{user.bio}} </p>
-                            <ul>
-                                <li><span>{{post_number}}</span> posts</li>
-                                <li><span>{{profile.followers|length}}</span> followers</li>
-                                <li><span>{{profile.following|length}}</span> following</li>
-                            </ul>
-                            <a href="{%url 'index'%}" class="btn btn-primary">Home</a>
+                              <h4 class="card-title">{{user.user.username}}</h4>
+                              <hr>
+                              <h3 class="card-text"> {{user.bio}} </h3>
                             </div>
+                            <div class="card-body">
+                                <span>{{profile.followers|length}}followers</span> </br>
+                                <span>{{profile.following|length}}following</span> 
+                            </div>
+                            
+                            
                         </div>
-                {% endfor %}
+                {% endfor %} 
+                <a href="{%url 'index'%}" class="btn btn-primary">Home</a>
         </div>
       </div>
+    </div>
+
+    {% else %}
+
+    <div class="row text-center">     
+          <h2> {{message}}</h2>
     </div>
     {% endif %}
 
